@@ -7,6 +7,7 @@ import logging
 import anzu.options
 import anzu.web
 from anzu.options import options
+import eveapi
 
 from evedir import uimodule
 import evedir.option_definitions
@@ -37,6 +38,7 @@ def get_db(echo=False):
     # If tables already exist, then this will do no harm other than delaying start.
     # And, this will crete any missing tables.
     DeclarativeBase.metadata.create_all(engine)
+    DeclarativeBase.metadata.bind = engine
 
     # This maps objects to database engines.
     bindings = dict(
@@ -58,6 +60,7 @@ def get_main_application(options):
     }
     application = anzu.web.Application(**settings)
     application._db = get_db()
+    application.eveapi = eveapi.EVEAPIConnection(cacheHandler=eveapi.RedisEVEAPICacheHandler())
     return application
 
 def read_configuration_and_options(machine_config = "/etc/evedir.conf"):
@@ -70,6 +73,6 @@ def read_configuration_and_options(machine_config = "/etc/evedir.conf"):
 
     # check for vital options and their values:
 
-    if not options.public_keyfile or not options.private_keyfile:
-        logging.exception("You need to set filenames for public and private key.")
-        sys.exit(3)
+#    if not options.public_keyfile or not options.private_keyfile:
+#        logging.exception("You need to set filenames for public and private key.")
+#        sys.exit(3)

@@ -11,6 +11,12 @@ body {
 	/* IE */
 	width: expression((document.body.clientWidth <= 1279) ? '1280px' : 'auto');
 }
+body.small {
+	background: none;
+	background-image: none;
+	min-width: 300px;
+	width: auto;
+}
 
 #header {
 	background-color: rgb(58,87,102);
@@ -168,4 +174,29 @@ span.fielderror {
 }
 .alternateLogin p {
 	text-align: center;
+}
+
+table.figures td,
+table.figures th {
+	text-align: right;
+}
+table.figures td:first-child,
+table.figures th:first-child {
+	text-align: left;
+}
+
+table.figures th {
+	border-bottom: 1px solid grey;
+}
+table.figures td:first-child {
+	border-right: 1px dashed #c0c0c0;
+}
+table.figures tr.even {
+	background-color: #f0f0f0;
+}
+span.negative_number {
+	color: red;
+}
+span.positive_number {
+	color: green;
 }

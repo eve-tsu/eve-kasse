@@ -1,0 +1,48 @@
+## -*- coding: utf-8 -*-
+<%inherit file="../master.html"/>
+<%def name="title()">${_("Reports")}</%def>
+${ modules.QuickstartMisc() }
+<%
+def pretty_print(fig):
+    s = ("{:,.2f}".format(fig)).replace(',', "'")
+    if fig < 0:
+        return '<span class="negative_number">%s</span>' % s
+    else:
+        return '<span class="positive_number">%s</span>' % s
+%>
+<h1>Transactions by Tag</h1>
+%if transactions_by_tag:
+<table border="0" class="figures">
+	<thead>
+		<tr>
+			<th>Tag</th><th>Sold</th><th>Bought</th><th>Sum</th>
+		</tr>
+	</thead>
+	<tbody>
+	%for i, tag in enumerate(transactions_by_tag):
+		<tr${ ' class="even"' if i%2 else ''}>
+			<td>${tag}</td>
+			<td>${pretty_print(transactions_by_tag[tag]['sell'])}</td>
+			<td>${pretty_print(transactions_by_tag[tag]['buy'])}</td>
+			<td>${pretty_print(transactions_by_tag[tag]['sell'] - transactions_by_tag[tag]['buy'])}</td>
+		</tr>
+	%endfor
+	</tbody>
+</table>
+%else:
+<span>Nothing has been tagged, yet.</span>
+%endif
+
+<h1>Deposits and Withdrawals</h1>
+<ul>
+%for i, (name, amount) in enumerate(deposits_payouts):
+	<li${ ' class="even"' if i%2 else ''}>${name} ${'&larr;' if amount < 0 else '&rarr;'} ${pretty_print(amount)}</li>
+%endfor
+</ul>
+
+<h2>Details</h2>
+<ul>
+%for i, (name, amount, reason, other) in enumerate(deposits_payouts_details):
+	<li${ ' class="even"' if i%2 else ''}>${name} ${'&larr;' if amount < 0 else '&rarr;'} ${other}: <strong>${reason[6:]}</strong> = ${pretty_print(amount)}</li>
+%endfor
+</ul>

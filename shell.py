@@ -14,8 +14,12 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from sqlalchemy import exc, or_, and_, func
 
+import eveapi
+
 if __name__ == "__main__":
     read_configuration_and_options()
     options.debug = True
     Session = get_db(echo=True)
     db = session = Session()
+
+    api = eveapi.EVEAPIConnection(cacheHandler=eveapi.RedisEVEAPICacheHandler())

@@ -60,5 +60,6 @@ distutils.core.setup(
         "FormEncode >= 1.2.4",
         "python-dateutil >= 1.5",
         "pytz >= 2011e",
+        "redis >= 2.0.0",
     ],
 )

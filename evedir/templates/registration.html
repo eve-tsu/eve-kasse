@@ -1,0 +1,69 @@
+## -*- coding: utf-8 -*-
+<%inherit file="master.html"/>
+<%def name="title()">${_("Registration")}</%def>
+<div id="loginBox">
+	<h1>${_("Registration")}</h1>
+	%if errors:
+	<p>
+	%for error in errors:
+		<span class="fielderror">${error}</span>
+	%endfor
+	</p>
+	%endif
+	<form method="post" action="/register">
+		<table><tbody>
+			<tr>
+				<td class="label">
+					<label for="email">${_("Email:")}</label>
+				</td>
+				<td class="field">
+					<input type="email" id="email" name="email" value="${value_for('email') or '' | h}" class="${'errorous' if error_for('email') else ''}" />
+					%if error_for('email'):
+					<span class="fielderror" />${error_for('email')}</span>
+					%endif
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="password">${_("Password:")}</label>
+				</td>
+				<td class="field">
+					<input type="password" id="password" name="password" value="" class="${'errorous' if error_for('password') else ''}" />
+					%if error_for('password'):
+					<span class="fielderror" />${error_for('password')}</span>
+					%endif
+				</td>
+			</tr>
+			<tr><td colspan="2">${_("We will need your API key to map your account to characters and corporations.")}</td></tr>
+			<tr>
+				<td class="label">
+					<label for="keyID">${_("keyID:")}</label>
+				</td>
+				<td class="field">
+					<input type="number" min="1" id="keyID" name="keyID" value="${value_for('keyID') or '' | h}" class="${'errorous' if error_for('keyID') else ''}" />
+					%if error_for('keyID'):
+					<span class="fielderror" />${error_for('keyID')}</span>
+					%endif
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="vCode">${_("vCode:")}</label>
+				</td>
+				<td class="field">
+					<input type="text" id="vCode" name="vCode" value="${value_for('vCode') or '' | h}" class="${'errorous' if error_for('vCode') else ''}" />
+					%if error_for('vCode'):
+					<span class="fielderror" />${error_for('vCode')}</span>
+					%endif
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="buttons">
+					<input type="reset" name="reset" value="${_('Reset')}" accesskey="r" />
+					<input type="submit" name="register" value="${_('Register')}" class="primary" accesskey="r" />
+					${xsrf_form_html()}
+				</td>
+			</tr>
+		</tbody></table>
+	</form>
+</div>

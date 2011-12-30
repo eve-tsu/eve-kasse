@@ -1,0 +1,74 @@
+## -*- coding: utf-8 -*-
+<%inherit file="master.html"/>
+<%def name="title()">${_("Keypairs")}</%def>
+${ modules.QuickstartMisc() }
+<h1>${_("Your API Keys")}</h1>
+<table border="0">
+<thead>
+	<tr>
+		<th>ID</th>
+		<th>Verification Code</th>
+		<th>Type</th>
+		<th>Access Mask</th>
+		<th>Expires</th>
+		<th>Valid?</th>
+	</tr>
+</thead>
+<tbody>
+% for keypair in current_user.keypairs:
+	<tr id="keypair_${keypair.keyID}">
+		<td>${keypair.keyID}</td>
+		<td>${keypair.vCode}</td>
+		<td>${keypair.type}</td>
+		<td>${keypair.accessMask}</td>
+		<td>${keypair.expires}</td>
+		<td>${keypair.valid}</td>
+	</tr>
+% endfor
+</tbody>
+</table>
+<!--
+<h2>${_("Add More")}</h2>
+<div>
+	%if errors:
+	<p>
+	%for error in errors:
+		<span class="fielderror">${error}</span>
+	%endfor
+	</p>
+	%endif
+	<form method="post" action="/keypairs">
+		<table><tbody>
+			<tr>
+				<td class="label">
+					<label for="keyID">${_("keyID:")}</label>
+				</td>
+				<td class="field">
+					<input type="number" min="1" id="keyID" name="keyID" value="${value_for('keyID') or '' | h}" class="${'errorous' if error_for('keyID') else ''}" />
+					%if error_for('keyID'):
+					<span class="fielderror" />${error_for('keyID')}</span>
+					%endif
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="vCode">${_("vCode:")}</label>
+				</td>
+				<td class="field">
+					<input type="text" id="vCode" name="vCode" value="${value_for('vCode') or '' | h}" class="${'errorous' if error_for('vCode') else ''}" />
+					%if error_for('vCode'):
+					<span class="fielderror" />${error_for('vCode')}</span>
+					%endif
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="buttons">
+					<input type="reset" name="reset" value="${_('Reset')}" accesskey="r" />
+					<input type="submit" name="add" value="${_('Add')}" class="primary" accesskey="a" />
+					${xsrf_form_html()}
+				</td>
+			</tr>
+		</tbody></table>
+	</form>
+</div>
+-->

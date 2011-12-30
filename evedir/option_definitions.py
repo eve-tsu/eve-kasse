@@ -17,3 +17,5 @@ define("database", default="sqlite:////var/lib/evedir/data.sqlite3", help="the d
 define("hostname", help="public hostname (including http:// or https://) of this installation - without port")
 
 define("file_storage", default="/var/lib/evedir", help="this directory will be used to store files related to capaigns")
+
+define("sync_wallets_every", default=8, help="hours to wait between wallet synchronization runs")

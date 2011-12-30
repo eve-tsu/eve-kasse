@@ -1,0 +1,70 @@
+## -*- coding: utf-8 -*-
+<!DOCTYPE html>
+<html lang="${locale.code}" dir="ltr">
+<head>
+	<link rel="stylesheet" type="text/css" href="${static_url('css/yui/fonts-min.css')}" />
+	<link rel="stylesheet" type="text/css" href="${static_url('css/yui/reset-min.css')}" />
+	<link rel="stylesheet" type="text/css" href="${static_url('css/yui/grids-min.css')}" />
+	<link rel="stylesheet" type="text/css" href="${static_url('css/yui/base-min.css')}" />
+	<link rel="stylesheet" type="text/css" href="${static_url('css/default.css')}" />
+</head>
+${ modules.QuickstartMisc() }
+
+<body class="small">
+% if untagged:
+<h2>${_("add a new rule")}</h2>
+<p>The following item has no default tagging rule.
+A "default tagging rule" automatically assigns a tag to all items of the corresponding type.
+You can modify the tag later.</p>
+<div>
+	<img src="http://image.eveonline.com/Type/${untagged[0]}_64.png" alt="${untagged[1] | h}" align="left" />
+	<em>${untagged[1] | h}</em>
+</div>
+%if errors:
+<p>
+%for error in errors:
+	<span class="fielderror">${error}</span>
+%endfor
+</p>
+%endif
+<form method="post" id="taggingForm">
+	<table><tbody>
+		<tr>
+			<td class="label">
+				<label for="tagname">${_("caption of the tag:")}</label>
+			</td>
+			<td class="field">
+				<input type="text" id="tagname" name="tagname" value="${value_for('tagname') or '' | h}" class="${'errorous' if error_for('tagname') else ''}" />
+				%if error_for('tagname'):
+				<span class="fielderror" />${error_for('tagname')}</span>
+				%endif
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="buttons">
+				<input type="hidden" name="typeID" value="${untagged[0]}" />
+				<input type="reset" name="reset" value="${_('Reset')}" accesskey="r" />
+				<input type="submit" name="add" value="${_('Add')}" class="primary" accesskey="a" />
+				${xsrf_form_html()}
+			</td>
+		</tr>
+	</tbody></table>
+</form>
+%if tags:
+<div class="tagcloud">
+%for tag in tags:
+	<% js_action = "javascript:$('tagname').value = '"+tag.replace("'", "\'")+"'; $$('#taggingForm input[type=\\\'submit\\\']')[0].disabled='disabled'; $('taggingForm').submit(); return false" %>
+	%if tags[tag]['num'] > 0:
+	<a href="${js_action}" class="tagcloud_entry${ ' unused' if tags[tag]['other'] else ''}" style="font-size: ${max(80, min(280, basesize*(float(tags[tag]['num']) / tag_average)))}%">${tag}</a>&nbsp;
+	%else:
+	<a href="${js_action}" class="tagcloud_entry${ ' unused' if tags[tag]['other'] else ''}">${tag}</a>&nbsp;
+	%endif
+%endfor
+</div>
+%endif
+% else:
+<h2>no new items - no more tags</h2>
+<p>Seems as if every item in your wallet has been covered by a tag. Good!</p>
+<p>You can add new default tags if a new item type shows up.</p>
+% endif
+</body>

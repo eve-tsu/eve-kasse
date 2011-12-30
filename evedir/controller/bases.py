@@ -7,7 +7,7 @@ from sqlalchemy import and_
 from evedir.model import User
 
 __all__ = [
-    'DatabaseMixin', 'BaseHandler',
+    'DatabaseMixin', 'BaseHandler', 'EveApiAccessorMixin',
 ]
 
 class DatabaseMixin(object):
@@ -22,13 +22,23 @@ class DatabaseMixin(object):
         return self._db
 
 
-class BaseHandler(RequestHandler, DatabaseMixin):
+class EveApiAccessorMixin(object):
+
+    def get_eveapi_for(self, keyID, vCode):
+        api = self.application.eveapi
+        return api.auth(keyID=keyID, vCode=vCode)
+
+
+class BaseHandler(RequestHandler, DatabaseMixin, EveApiAccessorMixin):
 
     def get_current_user(self):
+        user = getattr(self, '_user', None)
+        if user:
+            return user
         user_id = self.get_secure_cookie("user")
         if user_id:
-            user = self.db.query(User).filter(and_(User.id == int(user_id), User.enabled == True)).first()
-            return user
+            self._user = self.db.query(User).filter(and_(User.id == int(user_id), User.enabled == True)).first()
+            return self._user
         return None
 
 # Example decorator:
