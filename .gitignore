@@ -1,0 +1,8 @@
+*.komodoproject
+.komodotools
+*.pyc
+*.pyo
+build
+dist
+README.pdf
+test-*.db

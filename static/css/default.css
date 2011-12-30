@@ -1,0 +1,171 @@
+/**
+ * Copyright (c) 2009-2011 by W-Mark Kubacki; wmark@hurrikane.de
+ */
+
+body {
+	background-image: url(data:image/gif;base64,R0lGODlhAQBkALMAAPj4+PT09Pr6+vX19ff39/n5+fPz8/v7+/b29vz8/P39/f7+/v///wAAAAAAAAAAACH5BAAAAAAALAAAAAABAGQAAAQp0CSWwqx35IumQgrzhQpBAidZhIuwMO27HHJS37ANK6/I/KFfD/Yj/iIAOw==);
+	background-repeat: repeat-x;
+	background-color: white;
+	background-position: 2em left;
+	min-width: 900px;
+	/* IE */
+	width: expression((document.body.clientWidth <= 1279) ? '1280px' : 'auto');
+}
+
+#header {
+	background-color: rgb(58,87,102);
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		right top,
+		color-stop(0, rgb(14,21,25)),
+		color-stop(0.3, rgb(58,87,102)),
+		color-stop(1, rgb(14,21,25))
+	);
+	background-image: -moz-linear-gradient(
+		left center,
+		rgb(14,21,25) 0%,
+		rgb(58,87,102) 30%,
+		rgb(14,21,25) 100%
+	);
+	color: white;
+	display: block;
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=1,StartColorStr=#FF3A5766,EndColorStr=#FF0E1519);
+	min-height: 44px;
+	margin-top: 0.5em;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Gradient(GradientType=1,StartColorStr=#FF3A5766,EndColorStr=#FF0E1519)";
+	padding: 0 1em 0 2em;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="datetime"],
+input[type="date"],
+input[type="time"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="url"] {
+	border: 1px solid #d9d9d9;
+	background: white;
+	color: #006cb0;
+	width: 20em;
+}
+
+input[type="submit"],
+input[type="reset"] {
+	margin: 0;
+	border: 1px solid #d9d9d9;
+	color: #464646;
+	cursor: pointer;
+	padding: 2px 14px;
+	-moz-border-radius: 11px;
+	-khtml-border-radius: 11px;
+	-webkit-border-radius: 11px;
+	border-radius: 11px;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	-khtml-box-sizing: content-box;
+	box-sizing: content-box;
+	background: #f2f2f2;
+	text-shadow: rgba(255, 255, 255, 1) 0 1px 0;
+	background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2JhKDI1NSwyNTUsMjU1LDEpOyIgLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOnJnYmEoMjMzLDIzMywyMzMsMSk7IiAvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IGZpbGw9InVybCgjZ3JhZGllbnQpIiBoZWlnaHQ9IjEwMCUiIHdpZHRoPSIxMDAlIiAvPjwvc3ZnPg==);
+	background: -o-linear-gradient(top, rgba(255,255,255,1), rgba(233,233,233,1));
+	background: -moz-linear-gradient(top, rgba(255,255,255,1), rgba(233,233,233,1));
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(255,255,255,1)), color-stop(1, rgba(233,233,233,1)));
+}
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+	color: black;
+	border-color: #666;
+}
+
+input[type="submit"][class="primary"],
+input[type="reset"][class="primary"] {
+	color: white;
+	border: 1px solid rgb(58,87,102);
+	background: #21759b;
+	text-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0;
+	font-weight: bold;
+	float: right;
+	background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2JhKDU4LDg3LDEwMiwxKTsiIC8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2JhKDE0LDIxLDI1LDEpOyIgLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCBmaWxsPSJ1cmwoI2dyYWRpZW50KSIgaGVpZ2h0PSIxMDAlIiB3aWR0aD0iMTAwJSIgLz48L3N2Zz4=);
+	background: -o-linear-gradient(top, rgba(58,87,102,1), rgba(14,21,25,1));
+	background: -moz-linear-gradient(top, rgba(58,87,102,1), rgba(14,21,25,1));
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(58,87,102,1)), color-stop(1, rgba(14,21,25,1)));
+}
+input[type="submit"][class="primary"]:hover,
+input[type="reset"][class="primary"]:hover {
+	border-color: black;
+}
+
+th, td {
+	border: none;
+}
+
+input.errorous {
+	border: 1px solid #ff0000;
+}
+input.changed {
+	border: 1px solid #215495;
+}
+span.fielderror {
+	color: red;
+}
+
+#header h1 {
+	float: left;
+	margin: 1em;
+	font-size: 100%;
+}
+
+#global_spinner,
+#header nav ul {
+	float: left;
+	padding-left: 0;
+	margin-left: 0;
+}
+#account_navigation li,
+#header nav ul li {
+	display: inline;
+	white-space: nowrap;
+	margin-left: 1em;
+	padding-left: 1em;
+	border-left: 1px solid white;
+}
+#header a {
+	color: white;
+	text-decoration: none;
+}
+
+#account_navigation {
+	padding-left: 0;
+	margin-left: 0;
+	float: right;
+	margin-right: 12px;
+}
+#account_navigation li:first-child {
+	border-left: none;
+	padding-left: 0;
+}
+
+#account_navigation a {
+	background-color: rgba(255, 255, 255, 0.06);
+	border-radius: 5px;
+}
+
+#account_navigation a {
+	display: inline-block;
+	padding: 0 1em 0 1em;
+}
+
+#main {
+	margin-left: 2em;
+}
+.alternateLogin,
+#loginBox {
+	width: 640px;
+	margin: auto;
+}
+.alternateLogin p {
+	text-align: center;
+}

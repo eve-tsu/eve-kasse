@@ -1,0 +1,13 @@
+## -*- coding: utf-8 -*-
+<%inherit file="master.html"/>
+<%def name="title()">${_("Campaigns")}</%def>
+${ modules.QuickstartMisc() }
+<h1>Current Campaigns</h1>
+% if campaigns:
+${ modules.Template("campaign.html", campaigns=campaigns) }
+% endif
+% if archived_campaigns:
+<hr />
+<h2>Archived Campaigns</h2>
+${ modules.Template("campaign.html", campaigns=archived_campaigns) }
+% endif

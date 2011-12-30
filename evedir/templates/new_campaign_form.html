@@ -1,0 +1,68 @@
+## -*- coding: utf-8 -*-
+<%inherit file="master.html"/>
+<%def name="title()">${_("New Campaign")}</%def>
+${ modules.QuickstartMisc() }
+<h1>Create new Campaign</h1>
+%if message:
+	${message}
+%endif
+<form method="post" enctype="multipart/form-data">
+	<table><tbody>
+		<tr>
+			<td class="label">
+				<label for="title">${_("Campaign Title:")}</label>
+			</td>
+			<td class="field">
+				<input type="text" id="title" name="title" value="${value_for('title') or '' | h}" class="${'errorous' if error_for('title') else ''}" />
+				%if error_for('title'):
+				<span class="fielderror" />${error_for('title')}</span>
+				%endif
+			</td>
+		</tr>
+		<tr>
+			<td class="label">
+				<label for="egress_address">${_("Sender Address:")}</label>
+			</td>
+			<td class="field">
+				<input type="text" id="egress_address" name="egress_address" value="${value_for('egress_address') or '' | h}" class="${'errorous' if error_for('egress_address') else ''}" />
+				%if error_for('egress_address'):
+				<span class="fielderror" />${error_for('egress_address')}</span>
+				%endif
+				<br /><span class="info">Leave empty to preserve the sender address.</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="label">
+				<label for="collect_clickdata">${_("Collect Clickdata?")}</label>
+			</td>
+			<td class="field">
+				<input type="checkbox" id="collect_clickdata" name="collect_clickdata" clicked="clicked" class="${'errorous' if error_for('collect_clickdata') else ''}" />
+				%if error_for('collect_clickdata'):
+				<span class="fielderror" />${error_for('collect_clickdata')}</span>
+				%endif
+				<br /><span class="info">
+					If checked links in the email are replaced by a proxy address to collect who has clicked on what.<br />
+					Having not checked that field will preserve all links.
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="label">
+				<label for="merger_file">${_("Merger File:")}</label>
+			</td>
+			<td class="field">
+				<input type="file" id="merger_file" name="merger_file" class="${'errorous' if error_for('merger_file') else ''}" />
+				%if error_for('merger_file'):
+				<span class="fielderror" />${error_for('merger_file')}</span>
+				%endif
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="buttons">
+				<input type="reset" name="reset" value="${_('Reset')}" accesskey="r" />
+				<input type="submit" name="create" value="${_('Create')}" class="primary" accesskey="c" />
+				${xsrf_form_html()}
+			</td>
+		</tr>
+	</tbody></table>
+</form>

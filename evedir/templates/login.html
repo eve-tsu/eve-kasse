@@ -1,0 +1,53 @@
+## -*- coding: utf-8 -*-
+<%inherit file="master.html"/>
+<%def name="title()">${_("Login")}</%def>
+<div id="loginBox">
+	<h1>${_("Login")}</h1>
+	%if message:
+	<p><span class="fielderror">${message}</span></p>
+	%endif
+	<form method="post" action="/login">
+		<table><tbody>
+			<tr>
+				<td class="label">
+					<label for="email">${_("Email:")}</label>
+				</td>
+				<td class="field">
+					<input type="email" id="email" name="email" value="${value_for('email') or '' | h}" class="${'errorous' if error_for('email') else ''}" />
+					%if error_for('email'):
+					<span class="fielderror" />${error_for('email')}</span>
+					%endif
+				</td>
+			</tr>
+			<tr>
+				<td class="label">
+					<label for="password">${_("Password:")}</label>
+				</td>
+				<td class="field">
+					<input type="password" id="password" name="password" value="" class="${'errorous' if error_for('password') else ''}" />
+					%if error_for('password'):
+					<span class="fielderror" />${error_for('password')}</span>
+					%endif
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="buttons">
+					<input type="reset" name="reset" value="${_('Reset')}" accesskey="r" />
+					<input type="submit" name="login" value="${_('Login')}" class="primary" accesskey="l" />
+					${xsrf_form_html()}
+				</td>
+			</tr>
+		</tbody></table>
+	%if forward_url:
+		<input type="hidden" name="forward_url" value="${forward_url | h}" />
+	%endif
+	</form>
+</div>
+<div class="alternateLogin">
+	<h2>or login by</h2>
+	<p>
+		<a href="/login/by_google" alt="${_('login by Google')}" accesskey="g" class="loginButton">
+			<img src="${static_url('images/3rdp/login-google.png')}" alt="${_('login by Google')}" />
+		</a>
+	</p>
+</div>

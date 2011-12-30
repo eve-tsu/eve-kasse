@@ -1,0 +1,39 @@
+## -*- coding: utf-8 -*-
+<%def name="head()"></%def>
+<!DOCTYPE html>
+<html lang="${locale.code}" dir="ltr">
+<head>
+	<title>${_("Anzu Quickstart template")} &mdash; ${self.title()}</title>
+	<link rel="stylesheet" type="text/css" href="${static_url('css/yui/fonts-min.css')}" />
+	<link rel="stylesheet" type="text/css" href="${static_url('css/yui/reset-min.css')}" />
+	<link rel="stylesheet" type="text/css" href="${static_url('css/yui/grids-min.css')}" />
+	<link rel="stylesheet" type="text/css" href="${static_url('css/yui/base-min.css')}" />
+	<link rel="stylesheet" type="text/css" href="${static_url('css/default.css')}" />
+	${self.head()}
+</head>
+<body>
+<div id="header">
+	<nav>
+		<h1>${_("Anzu Quickstart template")}</h1>
+		% if current_user:
+		<ul id="section_menu">
+			<li><a href="/dashboard" accesskey="d">Dashboard</a></li>
+			<li><a href="/campaign/new" accesskey="c">New Campaign</a></li>
+		</ul>
+		<img src="${static_url('images/loading_white.gif')}" id="global_spinner" alt="loading..." />
+		% endif
+	</nav>
+	<ul id="account_navigation">
+		% if current_user:
+		<li>${current_user.email_address}</li>
+		<li><a href="/logout" accesskey="o">logout</a></li>
+		% else:
+		<li><a href="/login" accesskey="o">login</a></li>
+		% endif
+	</ul>
+</div>
+<div id="main">
+${next.body()}
+</div>
+</body>
+</html>

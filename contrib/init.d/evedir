@@ -1,0 +1,26 @@
+#!/sbin/runscript
+#
+# by W-Mark Kubacki; wmark@hurrikane.de
+#
+
+APPUSER="evedir"
+APPDIR="/var/www/somedomain.local/evedir"
+PIDFILE="/var/run/evedir.pid"
+
+depend() {
+	need net
+}
+
+start() {
+	ebegin "Starting Quickstart"
+	start-stop-daemon --start --quiet --pidfile ${PIDFILE} --background --make-pidfile\
+		--chuid ${APPUSER}:${APPUSER} --chdir ${APPDIR} \
+		--exec ${APPDIR}/start.py -- --log_to_stderr=False
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping Quickstart"
+	start-stop-daemon --stop --pidfile ${PIDFILE}
+	eend $?
+}
