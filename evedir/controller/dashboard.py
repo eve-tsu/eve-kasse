@@ -50,7 +50,8 @@ class TaggingLanding(BaseHandler):
         self.render("wallet_tags/main.html")
 
 
-@path('/tagging/(corp|user)/(\d+)/(\d+)/add_default')
+@path('/tagging/(corp)/(\d+)/(100[0-6])/add_default')
+@path('/tagging/(user)/(\d+)/(1000)/add_default')
 class AddTagsHelper(BaseHandler):
 
     @authenticated
@@ -173,7 +174,8 @@ class ReportsHandler(BaseHandler):
         self.redirect('/report/corp/1231001270/1006')
 
 
-@path('/report/(corp|char)/(\d+)/(\d+)')
+@path('/report/(corp)/(\d+)/(100[0-6])')
+@path('/report/(char)/(\d+)/(1000)')
 class ReportGenerator(BaseHandler):
 
     @authenticated

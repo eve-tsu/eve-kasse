@@ -27,11 +27,12 @@ def sync_wallet(keypair, eveapi_ctx):
 
         # journal
         response = api.corp.WalletJournal(**params) if is_corpkey else api.char.WalletJournal(**params)
+        rows = response.entries if hasattr(response, 'entries') else response.transactions
         logging.debug('Got %d wallet journal entries for keypair %d, account %s.',
-                      len(response.entries), keypair.keyID, params['accountKey'])
-        if len(response.entries) > 0:
+                      len(rows), keypair.keyID, params['accountKey'])
+        if len(rows) > 0:
             WalletJournalEntry.bulk_insert(
-                response.entries,
+                rows,
                 accountKey = params['accountKey'],
                 corporationID = keypair.corporationID if is_corpkey else None,
                 character = params['characterID'] if not is_corpkey else None
@@ -39,11 +40,12 @@ def sync_wallet(keypair, eveapi_ctx):
 
         # transactions
         response = api.corp.WalletTransactions(**params) if is_corpkey else api.char.WalletTransactions(**params)
+        rows = response.entries if hasattr(response, 'entries') else response.transactions
         logging.debug('Got %d wallet transactions for keypair %d, account %s.',
-                      len(response.transactions), keypair.keyID, params['accountKey'])
-        if len(response.transactions) > 0:
+                      len(rows), keypair.keyID, params['accountKey'])
+        if len(rows) > 0:
             WalletTransaction.bulk_insert(
-                response.transactions,
+                rows,
                 accountKey = params['accountKey'],
                 corporationID = keypair.corporationID if is_corpkey else None,
                 character = params['characterID'] if not is_corpkey else None

@@ -102,6 +102,7 @@ class Keypair(DeclarativeBase):
             'WalletTransactions': 4194304,
         }
     }
+    ACCESS['Account'] = ACCESS['Character']
 
     def grants_access_to(self, section):
         if self.type in Keypair.ACCESS and section in Keypair.ACCESS[self.type] \
@@ -206,10 +207,10 @@ class WalletTransaction(DeclarativeBase):
         Index('typeID', 'transactionType'),
     )
     __conversions__ = {
-        'transactionID': ('transaction', lambda v: v),
+        'transactionID': ('transaction', ),
         'transactionDateTime': ('datetime', lambda v: datetime.fromtimestamp(v)),
-        'characterID': ('executorID', lambda v: v),
-        'characterName': ('executorName', lambda v: v),
+        'characterID': ('executorID', ),
+        'characterName': ('executorName', ),
     }
 
     transactionID       = Column('transaction', BigInteger, primary_key=True)
@@ -321,10 +322,16 @@ def bulk_insert_into(cls, rows, **common_values):
     for row in rows:
         vals = common_values.copy()
         for colname in row._cols:
+            colvalue = getattr(row, colname)
+            colvalue = colvalue if colvalue != '' else None
             if colname in cls.__conversions__:
-                vals[cls.__conversions__[colname][0]] = cls.__conversions__[colname][1](getattr(row, colname))
+                converter = cls.__conversions__[colname]
+                if len(converter) >= 2:
+                    vals[converter[0]] = converter[1](colvalue)
+                else:
+                    vals[converter[0]] = colvalue
             elif hasattr(cls, colname):
-                vals[colname] = getattr(row, colname)
+                vals[colname] = colvalue
             else:
                 logging.debug("Column %s is not part of model %r.", colname, cls)
         new_entries.append(vals)
