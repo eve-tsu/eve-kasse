@@ -23,7 +23,7 @@ def pretty_print(fig):
 		<tr${ ' class="even"' if i%2 else ''}>
 			<td>${tag}</td>
 			<td>${pretty_print(transactions_by_tag[tag]['sell'])}</td>
-			<td>${pretty_print(transactions_by_tag[tag]['buy'])}</td>
+			<td>${pretty_print(-transactions_by_tag[tag]['buy'])}</td>
 			<td>${pretty_print(transactions_by_tag[tag]['sell'] - transactions_by_tag[tag]['buy'])}</td>
 		</tr>
 	%endfor
@@ -43,6 +43,6 @@ def pretty_print(fig):
 <h2>Details</h2>
 <ul>
 %for i, (name, amount, reason, other) in enumerate(deposits_payouts_details):
-	<li${ ' class="even"' if i%2 else ''}>${name} ${'&larr;' if amount < 0 else '&rarr;'} ${other}: <strong>${reason[6:]}</strong> = ${pretty_print(amount)}</li>
+	<li${ ' class="even"' if i%2 else ''}>${name} ${'&larr;' if amount < 0 else '&rarr;'} ${other}: <strong>${reason[6:] | h}</strong> = ${pretty_print(amount)}</li>
 %endfor
 </ul>
