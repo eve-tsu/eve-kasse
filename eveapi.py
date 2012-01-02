@@ -96,11 +96,18 @@
 #
 #-----------------------------------------------------------------------------
 
-import httplib
 import urlparse
 import urllib
 import copy
 import logging
+import types
+
+try:
+	from anzu.httputil import HTTPHeaders
+	from anzu.httpclient import HTTPRequest, HTTPClient
+except:
+	from tornado.httputil import HTTPHeaders
+	from tornado.httpclient import HTTPRequest, HTTPClient
 
 from xml.parsers import expat
 from time import strptime
@@ -335,36 +342,33 @@ class _RootContext(_Context):
 			response = None
 
 		if response is None:
-			if self._scheme == "https":
-				connectionclass = httplib.HTTPSConnection
-			else:
-				connectionclass = httplib.HTTPConnection
+			# construct the request
+			request = HTTPRequest(url='https://'+self._host+path)
+			request.use_gzip = True
+			if kw:
+				request.body = urllib.urlencode(kw)
+				request.method = 'POST'
+			if self._proxy:
+				request.url = path
+				request.proxy_host, request.proxy_port = self._proxy
 
-			if self._proxy is None:
-				http = connectionclass(self._host)
-				if kw:
-					http.request("POST", path, urllib.urlencode(kw), {"Content-type": "application/x-www-form-urlencoded"})
-				else:
-					http.request("GET", path)
-			else:
-				http = connectionclass(*self._proxy)
-				if kw:
-					http.request("POST", 'https://'+self._host+path, urllib.urlencode(kw), {"Content-type": "application/x-www-form-urlencoded"})
-				else:
-					http.request("GET", 'https://'+self._host+path)
+			# fetch from server
+			http_client = HTTPClient()
+			response = http_client.fetch(request)
 
-			response = http.getresponse()
-			if response.status != 200:
-				if response.status == httplib.NOT_FOUND:
+			if response.code != 200:
+				if response.code == 404:
 					raise AttributeError("'%s' not available on API server (404 Not Found)" % path)
 				else:
-					raise RuntimeError("'%s' request failed (%d %s)" % (path, response.status, response.reason))
-
-			if cache:
-				store = True
-				response = response.read()
+					raise RuntimeError("'%s' request failed (%d %s)" % (path, response.code, response.error))
+			# take the response's charset into account
+			if type(response.body) != types.UnicodeType and 'charset' in response.headers["Content-Type"]:
+				charset = response.headers["Content-Type"].split('charset=')[1].strip()
+				response = response.body.decode(charset)
 			else:
-				store = False
+				response = response.body
+
+			store = not not cache
 		else:
 			store = False
 
