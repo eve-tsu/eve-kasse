@@ -119,7 +119,7 @@ class RegistrationHandler(BaseHandler):
             self.set_status(409)
             errors.append(_("Sorry, but the email address is already registered with us. Did you forget your password?"))
 
-        # do the api keys belong to known characters?
+        # Does the API key work at all?
         logging.debug('About to fetch data from the EVE API servers.')
         auth = self.get_eveapi_for(keyID=self.value_for('keyID'), vCode=self.value_for('vCode'))
         try:
@@ -169,14 +169,17 @@ class RegistrationHandler(BaseHandler):
             )
             self.db.add(keypair)
             # characters
-            for character in characters:
-                logging.debug('About to add toon "%s" (%d) to account of "%s".', character.characterName, character.characterID, user.email_address)
-                self.db.add(Toon(
-                    characterID=character.characterID,
-                    name=character.characterName,
-                    corporation_id=character.corporationID,
-                    holder=user
-                ))
+            if keypair.type != 'Corporation':
+                for character in characters:
+                    c = self.db.query(Toon).filter(Toon.characterID == character.characterID).first()
+                    if not c:
+                        logging.debug('About to add toon "%s" (%d) to account of "%s".', character.characterName, character.characterID, user.email_address)
+                        self.db.add(Toon(
+                            characterID=character.characterID,
+                            name=character.characterName,
+                            corporation_id=character.corporationID,
+                            holder=user
+                        ))
             logging.debug('About to commit data for new account belonging to "%s".', user.email_address)
             self.db.commit()
             logging.info('The account has been created! Redirecting user "%s".', user.email_address)
