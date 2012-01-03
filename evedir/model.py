@@ -3,6 +3,7 @@
 
 from os import urandom
 from hashlib import sha1
+from codecs import unicode_escape_decode
 from datetime import datetime
 import logging
 
@@ -162,6 +163,7 @@ class WalletJournalEntry(DeclarativeBase):
 #    )
     __conversions__ = {
         'date': ('datetime', lambda v: datetime.fromtimestamp(v)),
+        'reason': ('reason', lambda v: WalletJournalEntry.fix_reason_field(v)),
     }
 
     refID               = Column(BigInteger, primary_key=True)
@@ -195,6 +197,17 @@ class WalletJournalEntry(DeclarativeBase):
     @classmethod
     def bulk_insert(cls, rows, **common_values):
         return bulk_insert_into(cls, rows, **common_values)
+
+    @classmethod
+    def fix_reason_field(cls, reason):
+        if not reason:
+            return reason
+        reason = reason.strip()
+        if reason.startswith(u'DESC: "') and reason.endswith(u'"'):
+            reason = u'DESC: '+reason[7:-1]
+        # see https://forums.eveonline.com/default.aspx?g=posts&t=53350
+        reason = unicode_escape_decode(reason)[0]
+        return reason
 
 
 class WalletTransaction(DeclarativeBase):
