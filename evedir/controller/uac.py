@@ -68,16 +68,16 @@ class GoogleAuthHandler(BaseHandler, GoogleMixin):
             return
         self.authenticate_redirect()
 
-    def _on_auth(self, user):
+    def _on_auth(self, gmail_data):
         _ = self.locale.translate
-        if not user:
+        if not gmail_data:
             self.set_status(403)
             msg=_("Google auth failed.")
             self.render("login.html", message=msg, forward_url=self.get_argument('next', None))
             return
 
         logging.debug("Google authentication came back with %r", user)
-        user = self.db.query(User).filter(and_(User.email_address == user['email'], User.enabled == True)).first()
+        user = self.db.query(User).filter(and_(User.email_address == gmail_data['email'], User.enabled == True)).first()
         if user:
             self.set_secure_cookie("user", str(user.id))
             self.redirect(self.get_argument('forward_url', '/dashboard'))
