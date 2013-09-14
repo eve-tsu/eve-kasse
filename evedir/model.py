@@ -176,7 +176,7 @@ class WalletJournalEntry(DeclarativeBase):
                                  nullable=True, index=True)
 
     datetime            = Column(DateTime, nullable=False, index=True)
-    refTypeID           = Column(Integer, nullable=False)
+    refTypeID           = Column(Integer, nullable=False) # e.g. 85=bounty tax, 97=PI tax 33=Mission Reward tax, 34=Mission time bonus tax
     ownerName1          = Column(Unicode(128), nullable=False)
     ownerID1            = Column(BigInteger, nullable=False)
     ownerName2          = Column(Unicode(128), nullable=False)

@@ -7,6 +7,7 @@ from datetime import datetime
 
 from sqlalchemy import exc, or_, and_
 from anzu.options import options
+from anzu.httpclient import HTTPError
 
 import eveapi
 from evedir.model import Keypair
@@ -47,21 +48,22 @@ def wallet_synchronization(sessionmaker):
 
     while True:
         start = datetime.utcnow()
+        keypairs = keypairs_with_wallet_access(db)
+        logging.info('Wallet synchronization triggered.')
 
-        try:
-            keypairs = keypairs_with_wallet_access(db)
-            logging.info('Wallet synchronization triggered.')
-            for keypair in keypairs:
+        for keypair in keypairs:
+            try:
                 logging.debug('Syncing wallets of key with keyID=%d', keypair.keyID)
                 sync_wallet(keypair, eveapi_ctx)
-
-        except Exception, e:
-            logging.exception("Unhandled exception %s", e)
-            if options.debug:
-                raise
-            else:
-                # do nothing, the service must keep going on
-                pass
+            except HTTPError, e:
+                logging.warning('HTTP Error %r', e)
+            except Exception, e:
+                logging.exception("Unhandled exception %s", e)
+                if options.debug:
+                    raise
+                else:
+                    # do nothing, the service must keep going on
+                    pass
 
         seconds_passed = (datetime.utcnow() - start).seconds
         seconds_to_sleep = options.sync_wallets_every * 3600 - seconds_passed
